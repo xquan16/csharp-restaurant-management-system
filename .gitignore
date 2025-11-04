@@ -1,0 +1,24 @@
+# C# / Visual Studio / .NET
+
+## Compiled Binaries (最重要的)
+## 忽略所有编译出来的 .exe 和 .dll 文件
+[Bb]in/
+[Oo]bj/
+
+## Visual Studio IDE files
+## 忽略VS自动生成的配置文件
+.vs/
+*.suo
+*.user
+
+## Build results
+[Rr]elease/
+[Dd]ebug/
+
+## NuGet packages
+## 忽略下载的第三方库
+packages/
+*.nupkg
+
+## Other
+*.dbmdl
