@@ -94,7 +94,6 @@ namespace assignment_admin_
             }
         }
 
-
         // Menu cateories management operations
         public void Add(TextBox item, TextBox price, CheckBox isAvailable)
         {
@@ -115,7 +114,6 @@ namespace assignment_admin_
             catch (Exception ex)
             {
                 MessageBox.Show($"Add operation failed: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                return;
             }
             finally
             {
@@ -131,6 +129,7 @@ namespace assignment_admin_
             try
             {
                 string query = $"SELECT * FROM {TableName} WHERE Id = @Id";
+
                 using (SqlConnection conn = new SqlConnection(GetConnectionString()))
                 {
                     conn.Open();
@@ -149,7 +148,6 @@ namespace assignment_admin_
                             else
                             {
                                 MessageBox.Show("Item not found with the specified ID.", "Not Found", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                                return;
                             }
                         }
                     }
@@ -158,7 +156,6 @@ namespace assignment_admin_
             catch (Exception ex)
             {
                 MessageBox.Show($"Find operation failed: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                return;
             }
         }
 
@@ -190,7 +187,6 @@ namespace assignment_admin_
             catch (Exception ex)
             {
                 MessageBox.Show($"Update operation failed: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                return;
             }
             finally
             {
@@ -224,7 +220,6 @@ namespace assignment_admin_
             catch (Exception ex)
             {
                 MessageBox.Show($"Delete operation failed: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                return;
             }
             finally
             {
@@ -250,8 +245,7 @@ namespace assignment_admin_
             }
             catch (Exception ex)
             {
-                MessageBox.Show($"Search failed: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);   
-                return;
+                MessageBox.Show($"Search failed: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
             finally
             {

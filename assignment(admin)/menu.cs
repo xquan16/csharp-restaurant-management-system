@@ -236,6 +236,10 @@ namespace assignment_admin_
         }
 
 
+
+
+
+
         private void tabsBtn1_Click(object sender, EventArgs e)
         {
             tabsColor(tabsBtn1);
@@ -389,6 +393,7 @@ namespace assignment_admin_
         }
 
 
+
         private void IMGhallBtn_Click(object sender, EventArgs e)
         {
             HideAllPanels(HalldetailP);
@@ -531,16 +536,10 @@ namespace assignment_admin_
 
         private void btnDELETE_Click(object sender, EventArgs e)
         {
-            if (halls.findDelete(DELETEtxt1, showInfo) == true)
-            {
-                halls.delete(DELETEtxt1, showInfo, hallDGV);
-                hallSidePanel(imgHall);
-            }
-            else 
-            {
-                hallSidePanel(imgHall);
-                return;            
-            }
+            halls.findDelete(DELETEtxt1, showInfo);
+            halls.delete(DELETEtxt1, showInfo, hallDGV);
+
+            hallSidePanel(imgHall);
         }
 
 
@@ -584,7 +583,7 @@ namespace assignment_admin_
         }
 
 
-        private void tickBtn_Click(object sender, EventArgs e)  // year, month button
+        private void tickBtn_Click(object sender, EventArgs e)
         {
             byMLbl.Visible = true;
             byMLbl.Text = "By year, month";
@@ -595,6 +594,16 @@ namespace assignment_admin_
 
             report.refreshM(reportDGV, dtPicker);
             report.reportMonth(monthR, dtPicker, rLbl1y, rLbl1, rLbl2, rLbl3);
+        }
+
+        private void pictureBox8_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void h5Lbl_Click(object sender, EventArgs e)
+        {
+
         }
     }
 }

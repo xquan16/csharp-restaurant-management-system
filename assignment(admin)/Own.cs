@@ -39,7 +39,7 @@ namespace assignment_admin_
             {
                 cmd.Parameters.AddWithValue("@NewUsername", newUsername);
                 cmd.Parameters.AddWithValue("@NewPassword", newPassword);
-                cmd.Parameters.AddWithValue("@CurrentUsername", Program.CurrentUsername); // global variable
+                cmd.Parameters.AddWithValue("@CurrentUsername", Program.CurrentUsername);
 
                 conn.Open();
                 int rowsAffected = cmd.ExecuteNonQuery();
@@ -53,7 +53,6 @@ namespace assignment_admin_
                 else
                 {
                     MessageBox.Show("Update failed. Try again.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                    return;
                 }
             }
         }
@@ -61,7 +60,7 @@ namespace assignment_admin_
 
 
 
-        public (string oldN, string oldP) GetUserDetails()  // old username and password
+        public (string oldN, string oldP) GetUserDetails()
         {
             try
             {

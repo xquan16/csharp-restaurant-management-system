@@ -68,6 +68,7 @@ namespace assignment_admin_
                 cmd.Parameters.AddWithValue("@Status", status);
 
 
+
                 cmd.ExecuteNonQuery();
                 connection.Close();
 
@@ -215,5 +216,14 @@ namespace assignment_admin_
             }
             return hallNames;
         }
+
+
+
+
+
+
+
+        //get the requests from database
+
     }
 }

@@ -732,8 +732,6 @@
             // 
             // reportDGV
             // 
-            this.reportDGV.AllowUserToAddRows = false;
-            this.reportDGV.AllowUserToDeleteRows = false;
             this.reportDGV.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.DisplayedCells;
             this.reportDGV.AutoSizeRowsMode = System.Windows.Forms.DataGridViewAutoSizeRowsMode.AllCells;
             this.reportDGV.BackgroundColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(224)))), ((int)(((byte)(192)))));
@@ -1008,9 +1006,9 @@
             this.editPage.Controls.Add(this.Nusertxt);
             this.editPage.Controls.Add(this.label4);
             this.editPage.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.editPage.Location = new System.Drawing.Point(0, 0);
+            this.editPage.Location = new System.Drawing.Point(40, 0);
             this.editPage.Name = "editPage";
-            this.editPage.Size = new System.Drawing.Size(800, 450);
+            this.editPage.Size = new System.Drawing.Size(760, 450);
             this.editPage.TabIndex = 11;
             this.editPage.Visible = false;
             // 
@@ -1776,6 +1774,7 @@
             this.h5Lbl.Size = new System.Drawing.Size(19, 23);
             this.h5Lbl.TabIndex = 4;
             this.h5Lbl.Text = "5";
+            this.h5Lbl.Click += new System.EventHandler(this.h5Lbl_Click);
             // 
             // mPanel
             // 
@@ -1970,12 +1969,12 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(800, 450);
-            this.Controls.Add(this.menuPage);
-            this.Controls.Add(this.reservePage);
-            this.Controls.Add(this.hallPage);
-            this.Controls.Add(this.sidebarContainer);
             this.Controls.Add(this.HalldetailP);
+            this.Controls.Add(this.hallPage);
+            this.Controls.Add(this.menuPage);
             this.Controls.Add(this.editPage);
+            this.Controls.Add(this.reservePage);
+            this.Controls.Add(this.sidebarContainer);
             this.Cursor = System.Windows.Forms.Cursors.Arrow;
             this.Name = "menu";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;

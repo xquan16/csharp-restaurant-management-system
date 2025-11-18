@@ -43,6 +43,7 @@ namespace assignment_admin_
 
 
 
+
         public void refreshM(DataGridView dgv, DateTimePicker datetime)
         {
             try
@@ -54,7 +55,7 @@ namespace assignment_admin_
                     int year = datetime.Value.Year;
 
                     // SQL query to filter reservations by month and year
-                    string query = @"SELECT Id, CustomerName, Status, HallName, PhoneNumber, Date, [Amount of people], ReservationType, TotalSpend 
+                    string query = @"SELECT Id, CustomerName, HallName, PhoneNumber, Date, [Amount of people], ReservationType, TotalSpend, Status 
                             FROM dbo.Reservation 
                             WHERE MONTH(Date) = @Month AND YEAR(Date) = @Year 
                             ORDER BY Date, Time;";
@@ -72,7 +73,6 @@ namespace assignment_admin_
             catch (Exception ex)
             {
                 MessageBox.Show($"Failed to refresh report data: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                return;
             }
         }
 
@@ -89,7 +89,6 @@ namespace assignment_admin_
                 int year = dt.Value.Year;
                 int month = dt.Value.Month;
 
-                // showing selected month and year
                 y.Text = year.ToString();
                 m.Text = dt.Value.ToString("MMMM");
 
@@ -109,11 +108,11 @@ namespace assignment_admin_
                         cmd.Parameters.AddWithValue("@Month", month);
                         cmd.Parameters.AddWithValue("@Year", year);
 
-                        int revenue = Convert.ToInt32(cmd.ExecuteScalar());   // use query to get total spend
+                        int revenue = Convert.ToInt32(cmd.ExecuteScalar());
                         totalR.Text = $"RM{revenue}";
                     }
 
-                    using (SqlCommand cmd1 = new SqlCommand(query1, conn))  // use query1 to get status
+                    using (SqlCommand cmd1 = new SqlCommand(query1, conn))
                     {
                         cmd1.Parameters.AddWithValue("@Month", month);
                         cmd1.Parameters.AddWithValue("@Year", year);
@@ -135,7 +134,6 @@ namespace assignment_admin_
             catch (Exception ex)
             {
                 MessageBox.Show($"Failed to refresh report data: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                return;
             }
         }
 
@@ -148,7 +146,7 @@ namespace assignment_admin_
                 using (SqlConnection conn = new SqlConnection(GetConnectionString()))
                 {
                     // SQL query to filter by reservations type
-                    string query = @"SELECT Id, CustomerName, Status, HallName, [Amount of people], ReservationType, TotalSpend
+                    string query = @"SELECT Id, CustomerName, HallName, [Amount of people], ReservationType, TotalSpend, Status
                                     FROM Reservation ORDER BY ReservationType";
 
                     SqlDataAdapter adapter = new SqlDataAdapter(query, conn);
@@ -160,7 +158,6 @@ namespace assignment_admin_
             catch (Exception ex)
             {
                 MessageBox.Show($"Failed to refresh report data: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                return;
             }
         }
 
@@ -177,15 +174,16 @@ namespace assignment_admin_
                 {
                     conn.Open();
                     // count reservations by reservation type
-                    string typeQuery = @"SELECT COUNT(*) FROM Reservation WHERE ReservationType = @rt";
+                    string typeQuery = @"SELECT COUNT(*) FROM dbo.Reservation WHERE ReservationType = @rt";
 
                     // count total reservations
-                    string totalQuery = @"SELECT COUNT(*) AS TotalReservations FROM Reservation";
+                    string totalQuery = @"SELECT COUNT(*) AS TotalReservations FROM dbo.Reservation";
 
                     // count by status
-                    string statusQuery = @"SELECT COUNT(*) AS CountStatus FROM Reservation WHERE Status = @Status";
+                    string statusQuery = @"SELECT COUNT(*) AS CountStatus FROM dbo.Reservation WHERE Status = @Status";
 
-                    using (SqlCommand typeCmd = new SqlCommand(typeQuery, conn))  // get reservation types
+                    // get reservation types
+                    using (SqlCommand typeCmd = new SqlCommand(typeQuery, conn))
                     {
                         int corporate = 0;
                         int general = 0;
@@ -203,15 +201,15 @@ namespace assignment_admin_
                         rt.Text = $"Corporate - {corporate}\nGeneral - {general}\nPrivate Event - {pe}";
                     }
 
-
-                    using (SqlCommand totalCmd = new SqlCommand(totalQuery, conn))  // get total reservations
+                    // get total reservations
+                    using (SqlCommand totalCmd = new SqlCommand(totalQuery, conn))
                     {
-                        int totalReservations = Convert.ToInt32(totalCmd.ExecuteScalar());  // count the total row
+                        int totalReservations = Convert.ToInt32(totalCmd.ExecuteScalar());
                         totalR.Text = $"{totalReservations}";
                     }
 
-                    
-                    using (SqlCommand statusCmd = new SqlCommand(statusQuery, conn))   // get status counts
+                    // get status counts
+                    using (SqlCommand statusCmd = new SqlCommand(statusQuery, conn))
                     {
                         int confirmedCount = 0;
                         int pendingCount = 0;
@@ -229,7 +227,6 @@ namespace assignment_admin_
             catch (Exception ex)
             {
                 MessageBox.Show($"Failed to get reservation type data: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                return;
             }
         }
     }

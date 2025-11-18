@@ -10,7 +10,6 @@ using System.Windows.Forms;
 using System.Security.Cryptography;
 using System.Collections;
 using System.IO.Ports;
-using MongoDB.Driver.Core.Configuration;
 
 namespace assignment_admin_
 {
@@ -77,7 +76,7 @@ namespace assignment_admin_
                 using (SqlConnection conn = new SqlConnection(GetConnectionString()))
                 {
                     conn.Open();
-                    string query = "SELECT Id, HallName, Capacity, PartyType FROM Hall WHERE HallName = @HallName";
+                    string query = "SELECT Id, HallName, Capacity, PartyType FROM dbo.Hall WHERE HallName = @HallName";
                     using (SqlCommand cmd = new SqlCommand(query, conn))
                     {
                         cmd.Parameters.AddWithValue("@HallName", name);
@@ -138,7 +137,6 @@ namespace assignment_admin_
 
 
 
-
         //crud hall
         public void RefreshDGV(DataGridView halldgv)
         {
@@ -150,9 +148,9 @@ namespace assignment_admin_
                     conn.Open();
                     string query = "SELECT * FROM Hall";
 
-                    SqlDataAdapter adapter = new SqlDataAdapter(query, conn);    // execute the query extract the row
-                    DataTable dt = new DataTable();   // blank data table
-                    adapter.Fill(dt);   // fill the data table with the query result(extract by adapter)
+                    SqlDataAdapter adapter = new SqlDataAdapter(query, conn);
+                    DataTable dt = new DataTable();
+                    adapter.Fill(dt);
 
                     halldgv.DataSource = dt;
                 }
@@ -175,7 +173,7 @@ namespace assignment_admin_
 
             try
             {
-                string query = "INSERT INTO Hall (HallName, Capacity, PartyType) VALUES (@HallName, @Capacity, @PartyType)";
+                string query = "INSERT INTO dbo.Hall (HallName, Capacity, PartyType) VALUES (@HallName, @Capacity, @PartyType)";
                 ExecuteNonQuery(query, cmd =>
                 {
                     cmd.Parameters.AddWithValue("@HallName", hallN.Text);
@@ -189,13 +187,13 @@ namespace assignment_admin_
             catch (Exception ex)
             {
                 MessageBox.Show($"Add operation failed: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                return;
             }
             finally
             {
                 hallN.Text = "";
                 capacity.Text = "";
                 partyT.SelectedIndex = -1;
+
             }
         }
 
@@ -210,13 +208,14 @@ namespace assignment_admin_
                     return;
                 }
 
-                string query = "SELECT Id, HallName, Capacity, PartyType FROM Hall WHERE Id = @Id";
+                string query = "SELECT Id, HallName, Capacity, PartyType FROM dbo.Hall WHERE Id = @Id";
                 using (SqlConnection conn = new SqlConnection(GetConnectionString()))
                 {
                     conn.Open();
                     using (SqlCommand cmd = new SqlCommand(query, conn))
                     {
                         cmd.Parameters.AddWithValue("@Id", hallId);
+
                         using (SqlDataReader reader = cmd.ExecuteReader())
                         {
                             if (reader.Read())
@@ -240,7 +239,6 @@ namespace assignment_admin_
                                 hallN.Text = "";
                                 capacity.Text = "";
                                 partyT.SelectedIndex = -1;
-                                return;
                             }
                         }
                     }
@@ -268,7 +266,7 @@ namespace assignment_admin_
                 if (!int.TryParse(capacity.Text, out capacityValue))
                     return;
 
-                string query = "UPDATE Hall SET HallName = @HN, Capacity = @C, PartyType = @PT WHERE Id = @Id";
+                string query = "UPDATE dbo.Hall SET HallName = @HN, Capacity = @C, PartyType = @PT WHERE Id = @Id";
                 ExecuteNonQuery(query, cmd =>
                 {
                     cmd.Parameters.AddWithValue("@Id", hallId);
@@ -282,7 +280,6 @@ namespace assignment_admin_
             catch (Exception ex)
             {
                 MessageBox.Show($"Update operation failed: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                return;
             }
             finally
             {
@@ -294,17 +291,17 @@ namespace assignment_admin_
         }
 
 
-        public bool findDelete(TextBox ID, Label show)
+        public void findDelete(TextBox ID, Label show)
         {
             try
             {
                 if (!int.TryParse(ID.Text, out int hallId) || string.IsNullOrWhiteSpace(ID.Text))
                 {
                     MessageBox.Show("Please enter a valid ID number.", "Error");
-                    return false;
+                    return;
                 }
 
-                string query = "SELECT Id, HallName, Capacity, PartyType FROM Hall WHERE Id = @Id";
+                string query = "SELECT Id, HallName, Capacity, PartyType FROM dbo.Hall WHERE Id = @Id";
 
                 using (SqlConnection conn = new SqlConnection(GetConnectionString()))
                 {
@@ -312,6 +309,7 @@ namespace assignment_admin_
                     using (SqlCommand cmd = new SqlCommand(query, conn))
                     {
                         cmd.Parameters.AddWithValue("@Id", hallId);
+
                         using (SqlDataReader reader = cmd.ExecuteReader())
                         {
                             if (reader.Read())
@@ -321,13 +319,11 @@ namespace assignment_admin_
                                 string partyType = reader["PartyType"].ToString();
 
                                 show.Text = $"Hall Name: {hallName}\n\nCapacity: {capacity}\n\nParty Type: {partyType}";
-                                return true; // Hall found
                             }
                             else
                             {
                                 MessageBox.Show($"No hall found with ID: {hallId}", "Not Found");
                                 show.Text = "";
-                                return false;
                             }
                         }
                     }
@@ -336,7 +332,6 @@ namespace assignment_admin_
             catch (Exception ex)
             {
                 MessageBox.Show($"Find operation failed: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                return false;
             }
         }
 
@@ -354,7 +349,7 @@ namespace assignment_admin_
                     return;
                 }
 
-                string query = "DELETE FROM Hall WHERE Id = @Id";
+                string query = "DELETE FROM dbo.Hall WHERE Id = @Id";
                 ExecuteNonQuery(query, cmd =>
                 {
                     cmd.Parameters.AddWithValue("@Id", hallId);
@@ -366,7 +361,6 @@ namespace assignment_admin_
             catch (Exception ex)
             {
                 MessageBox.Show($"Delete operation failed: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                return;
             }
             finally
             {
